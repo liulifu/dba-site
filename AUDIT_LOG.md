@@ -114,3 +114,18 @@
 ---
 
 如需补充更精细的时间戳与完整输出，可在未来执行时把 az/dockers 命令前加 `PowerShell Start-Transcript` 启动全量审计输出并保存到 logs/ 目录。
+
+
+## 十一、GitHub Secrets 配置（通过 GitHub CLI）
+- 时间：本地执行，使用 gh CLI 登录并为仓库 liulifu/dba-site 写入 Secrets
+- gh 版本：gh version 2.81.0
+- 登录状态：gh auth status → account liulifu, scopes: repo, workflow, admin:repo_hook, write:packages
+- 命令与结果（关键信息）：
+  - gh repo set-default liulifu/dba-site → OK
+  - Set AZURE_CREDENTIALS（从本地 sp_credentials.json 读取）：OK
+  - Set AZURE_CONTAINERAPPS_ENV=dba-env：OK
+  - Set AZURE_RESOURCE_GROUP=dba-site-rg：OK
+  - Set AZURE_CONTAINERAPP_NAME=dba-site：OK
+  - Set AZURE_LOCATION=eastasia：OK
+  - Set ACR_LOGIN_SERVER=lifudbaacr.azurecr.io：OK
+- 说明：AZURE_CREDENTIALS 为服务主体 JSON（仅写入 GitHub Secrets，未提交到 Git）
