@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<article>
+  <h2>{{ c.title }}</h2>
+  <p><strong>行业</strong> {{ c.industry }} · <strong>技术栈</strong> {{ c.stack }}</p>
+  <p>{{ c.summary }}</p>
+  <h3>亮点</h3>
+  <ul>
+    {% for h in c.highlights %}
+    <li>{{ h }}</li>
+    {% endfor %}
+  </ul>
+  <h3>量化指标</h3>
+  <ul>
+    {% for m in c.metrics %}
+    <li>{{ m }}</li>
+    {% endfor %}
+  </ul>
+</article>
+{% endblock %}
+

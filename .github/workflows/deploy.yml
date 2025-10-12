@@ -1,0 +1,84 @@
+name: Build and Deploy to Azure Container Apps
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: [ "web/**", ".github/workflows/deploy.yml" ]
+  push:
+    tags:
+      - "v*.*.*"
+
+env:
+  IMAGE_NAME: dba-site
+  ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }}
+  RG: ${{ secrets.AZURE_RESOURCE_GROUP }}
+  ACA_ENV: ${{ secrets.AZURE_CONTAINERAPPS_ENV }}
+  ACA_NAME: ${{ secrets.AZURE_CONTAINERAPP_NAME }}
+  LOCATION: ${{ secrets.AZURE_LOCATION }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login (Service Principal JSON)
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Show Azure CLI version
+        run: az --version
+
+      - name: Derive tags
+        id: vars
+        run: |
+          SHORT_SHA=${GITHUB_SHA::7}
+          echo "TAG_SHA=${SHORT_SHA}" >> $GITHUB_OUTPUT
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG_VERSION=${GITHUB_REF#refs/tags/}
+            echo "TAG_VERSION=${TAG_VERSION}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build Docker image
+        working-directory: web
+        run: |
+          docker build -t $ACR_LOGIN_SERVER/${{ env.IMAGE_NAME }}:latest .
+          if [ -n "${{ steps.vars.outputs.TAG_VERSION }}" ]; then
+            docker tag $ACR_LOGIN_SERVER/${{ env.IMAGE_NAME }}:latest \
+              $ACR_LOGIN_SERVER/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG_VERSION }}
+          else
+            docker tag $ACR_LOGIN_SERVER/${{ env.IMAGE_NAME }}:latest \
+              $ACR_LOGIN_SERVER/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG_SHA }}
+          fi
+
+      - name: ACR Login
+        run: az acr login -n $(echo $ACR_LOGIN_SERVER | cut -d'.' -f1)
+
+      - name: Push Docker image
+        run: |
+          docker push $ACR_LOGIN_SERVER/${{ env.IMAGE_NAME }}:latest
+          if [ -n "${{ steps.vars.outputs.TAG_VERSION }}" ]; then
+            docker push $ACR_LOGIN_SERVER/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG_VERSION }}
+            echo "PUSH_TAG=${{ steps.vars.outputs.TAG_VERSION }}" >> $GITHUB_ENV
+          else
+            docker push $ACR_LOGIN_SERVER/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG_SHA }}
+            echo "PUSH_TAG=${{ steps.vars.outputs.TAG_SHA }}" >> $GITHUB_ENV
+          fi
+
+      - name: Deploy to Azure Container Apps
+        run: |
+          az containerapp update \
+            -n $ACA_NAME -g $RG \
+            --image $ACR_LOGIN_SERVER/${{ env.IMAGE_NAME }}:${{ env.PUSH_TAG }} \
+            --output table
+
+      - name: Show App FQDN
+        run: |
+          FQDN=$(az containerapp show -n $ACA_NAME -g $RG --query properties.configuration.ingress.fqdn -o tsv)
+          echo "App URL: https://$FQDN/"
+

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+  <h2>企业中的数据实际应用案例</h2>
+  <p>精选跨行业数据库落地实践：高可用架构、备份与容灾、性能优化、迁移割接与自动化运维。</p>
+  <div class="cards">
+    {% for c in cases %}
+    <a class="card" href="/cases/{{ c.slug }}">
+      <h3>{{ c.title }}</h3>
+      <p>{{ c.industry }} · {{ c.stack }}</p>
+      <ul>
+        {% for h in c.highlights[:3] %}
+        <li>{{ h }}</li>
+        {% endfor %}
+      </ul>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+

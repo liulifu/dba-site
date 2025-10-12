@@ -1,0 +1,90 @@
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_LEFT
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.units import cm
+
+# Create PDF
+pdf_path = "刘力夫_DBA_简历.pdf"
+
+doc = SimpleDocTemplate(pdf_path, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
+styles = getSampleStyleSheet()
+styleN = styles["Normal"]
+styleN.fontName = "Helvetica"
+styleN.fontSize = 10
+styleH = ParagraphStyle(name="Heading", fontSize=13, leading=16, spaceAfter=10, spaceBefore=10, fontName="Helvetica-Bold")
+
+content = [
+    Paragraph("刘力夫（LIU Lifu）", styleH),
+    Paragraph("男 | 40岁 | 电话：15810517437 | 邮箱：15810517437@139.com | 城市：北京", styleN),
+    Paragraph("求职意向：高级DBA / 数据库平台工程师 | 期望薪资：20K–40K | 18年工作经验", styleN),
+    Spacer(1, 10),
+
+    Paragraph("一、职业概述", styleH),
+    Paragraph("拥有18年IT项目与运维经验，近年专注于数据库与平台化方向。熟悉Oracle、PostgreSQL、MySQL等主流数据库，具备系统架构、性能优化、容灾备份及云数据库运维能力。曾服务制药、通信、电力及海外政府等行业，能将传统DBA工作与云原生、自动化、合规性要求结合，推动企业数据库体系升级。", styleN),
+    Spacer(1, 10),
+
+    Paragraph("二、核心技能", styleH),
+    Paragraph("• 数据库技术：Oracle（RAC/DG/DataGuard）、PostgreSQL、MySQL、SQL Server、达梦数据库<br/>"
+              "• 性能优化：SQL调优、索引策略、锁分析、执行计划分析、分区/分片设计<br/>"
+              "• 高可用与灾备：主备切换、双活架构、异地容灾、增量备份与恢复<br/>"
+              "• 自动化与脚本：Python / Shell / PowerShell 实现巡检、健康检测、变更管理<br/>"
+              "• 平台化建设：读写分离、分库分表、统一连接池、CI/CD数据库变更自动化<br/>"
+              "• 云与容器：熟悉Aliyun / AWS / Azure数据库服务及Docker、Kubernetes环境部署<br/>"
+              "• 合规与验证：制药行业CSV验证、GxP/GMP体系文档编写与系统验证经验", styleN),
+    Spacer(1, 10),
+
+    Paragraph("三、工作经历", styleH),
+    Paragraph("<b>百济神州生物药业有限公司 — ITBP（数据库平台方向）</b><br/>2025.01 – 至今<br/>"
+              "负责公司核心业务数据库架构规划与运维（Oracle / PostgreSQL / MySQL）。<br/>"
+              "推动数据库服务化建设，实施读写分离、中间件连接池与标准化部署。<br/>"
+              "优化高可用与灾备方案（双活 / 异地容灾），实现零中断切换。<br/>"
+              "构建Prometheus+Grafana监控体系，开发Python脚本实现巡检与告警。<br/>"
+              "参与数据库CI/CD集成，实现DDL变更与结构升级自动化。<br/>"
+              "系统性能提升20%以上，RTO恢复时间缩短至30分钟内。", styleN),
+    Spacer(1, 8),
+
+    Paragraph("<b>苏州云数医药科技有限公司 — CSV验证工程师</b><br/>2023.10 – 2024.12<br/>"
+              "负责实验室系统（LIMS/ELN）数据库验证与合规性文件（URS/FAT/OQ/PQ）。<br/>"
+              "核查数据库配置、权限、日志、备份策略，确保GxP合规。<br/>"
+              "跨部门协调QA/QC/IT，实现系统快速验收与稳定运行。", styleN),
+    Spacer(1, 8),
+
+    Paragraph("<b>航天信息股份有限公司海外业务分公司 — 实施运维经理</b><br/>2018.10 – 2023.05<br/>"
+              "负责坦桑尼亚酒店税项目数据库接口与后台架构设计。<br/>"
+              "自主开发远程监控系统，实现海外项目自动化运维，年节省40万元成本。<br/>"
+              "管理私有云工具链项目，交付中间件平台及数据库支持服务。", styleN),
+    Spacer(1, 8),
+
+    Paragraph("<b>卓望信息技术（北京）有限公司 — 高级IT经理</b><br/>2014.05 – 2018.06<br/>"
+              "负责电力行业数据库系统建设与运维。<br/>"
+              "推行健康监测与补丁策略，保障系统连续可用性。<br/>"
+              "主导多个电力管理平台数据库设计，全部项目顺利验收。", styleN),
+    Spacer(1, 8),
+
+    Paragraph("<b>普华讯光（北京）科技有限公司 — 项目经理/主管</b><br/>2011.01 – 2014.05<br/>"
+              "带领项目组交付多地电力综合管理系统。<br/>"
+              "管理第三方团队，负责数据库部署、风险评估及性能测试。", styleN),
+    Spacer(1, 10),
+
+    Paragraph("四、教育背景", styleH),
+    Paragraph("• 吉林大学 — 硕士 软件工程 (2010 – 2013)<br/>• 东北农业大学 — 本科 食品科学与工程 (2003 – 2007)", styleN),
+    Spacer(1, 10),
+
+    Paragraph("五、资格与认证", styleH),
+    Paragraph("• Oracle 数据库专家认证（OCP）<br/>• 熟悉Aliyun RDS、AWS RDS、Azure SQL Database平台运维<br/>• AI辅助数据库分析与预测维护研究实践", styleN),
+    Spacer(1, 10),
+
+    Paragraph("六、项目与成就", styleH),
+    Paragraph("• 数据库服务标准化项目：在百济神州构建统一数据库服务体系，实现跨系统数据统一调度与监控。<br/>"
+              "• 远程监控系统：在航天信息实现自动巡检与健康评分，减少人工运维70%。<br/>"
+              "• 实验室合规验证项目：通过多系统验证，协助客户顺利通过药监局审计。", styleN),
+    Spacer(1, 10),
+
+    Paragraph("七、自我评价", styleH),
+    Paragraph("拥有数据库深厚基础与云原生视角，兼具架构设计与实操经验。熟悉从传统数据库到云数据库平台转型的全过程。善于在企业环境中平衡性能、安全、合规与成本。未来职业目标：成为具备数据库平台化与智能化能力的资深DBA。", styleN)
+]
+
+doc.build(content)
+
+pdf_path

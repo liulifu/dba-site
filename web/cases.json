@@ -1,0 +1,106 @@
+[
+  {
+    "slug": "bio-pharma-ha-dr",
+    "title": "制药企业核心系统：高可用与容灾建设",
+    "industry": "医药/生物",
+    "stack": "MySQL InnoDB Cluster, Orchestrator, ProxySQL, Prometheus/Grafana",
+    "summary": "围绕批放行/实验室系统搭建数据库高可用与容灾体系，标准化SOP与演练机制。",
+    "highlights": [
+      "落地 InnoDB Cluster + Orchestrator，实现多可用区高可用与自动漂移",
+      "ProxySQL 统一入口与读写分离，保障切换对业务透明",
+      "Prometheus+Grafana+Alertmanager 构建指标与告警闭环",
+      "CI/CD 集成 Flyway 管理 DDL 变更，规范审核与回滚"
+    ],
+    "metrics": [
+      "RTO ≤ 30 分钟，RPO ≤ 5 分钟（按月演练）",
+      "核心交易 P95 时延下降 30%+",
+      "数据库资源成本下降 15%+"
+    ]
+  },
+  {
+    "slug": "overseas-tax-ops",
+    "title": "海外税务项目：自动化巡检与远程运维",
+    "industry": "政府/公共服务",
+    "stack": "PostgreSQL 流复制, Patroni, Python/Shell, Zabbix",
+    "summary": "面向海外多站点的数据库自动化运维实践，降低人力与跨时区沟通成本。",
+    "highlights": [
+      "Patroni 管控主备与健康检查，失效切换有序",
+      "自研巡检脚本与健康评分，周报/日报自动生成",
+      "Zabbix 指标纳管与告警分级，SLA 可量化"
+    ],
+    "metrics": [
+      "人工巡检工作量下降 70%",
+      "故障平均定位时间 MTTR 降低 40%",
+      "跨国时区运维响应稳定在 15 分钟内"
+    ]
+  },
+  {
+    "slug": "power-grid-ops",
+    "title": "电力行业：生产库稳定性与补丁策略",
+    "industry": "能源/电力",
+    "stack": "Oracle DG/RAC, RMAN, OEM, Shell",
+    "summary": "构建稳定可维护的电力行业数据库平台，完善变更与补丁策略。",
+    "highlights": [
+      "DG/RAC 保障全年高可用，制定补丁与变更窗口",
+      "RMAN 策略分层：全量/增量/归档，演练常态化",
+      "容量规划与分区策略，历史数据冷热分层"
+    ],
+    "metrics": [
+      "年度计划外中断为 0",
+      "月度恢复演练通过率 100%",
+      "审计问题闭环率 100%"
+    ]
+  },
+  {
+    "slug": "csv-validation",
+    "title": "GxP/CSV 合规：数据库验证与审计",
+    "industry": "医药/实验室",
+    "stack": "Oracle/MySQL, 审计/加密/脱敏, 文档与流程体系",
+    "summary": "结合 GxP/CSV 要求完善数据库配置、权限、日志与备份策略，出具审计与验证文档。",
+    "highlights": [
+      "URS/FAT/OQ/PQ 全流程文档与验证",
+      "账号权限最小化，关键表加密与脱敏",
+      "审计留痕与合规检查清单常态化"
+    ],
+    "metrics": [
+      "外部审计 0 重大缺陷",
+      "关键用例通过率 100%",
+      "合规整改周期缩短 50%"
+    ]
+  },
+  {
+    "slug": "migration-cutover",
+    "title": "跨版本/跨云迁移与割接",
+    "industry": "互联网/多云",
+    "stack": "MySQL XtraBackup, pgBackRest/WAL-G, AWS/Aliyun RDS",
+    "summary": "最小化停机窗口的跨版本/跨云迁移实践，保障一致性与回滚路径。",
+    "highlights": [
+      "冷热双活演练，预案覆盖失败回滚",
+      "WAL/G 物理复制与逻辑复制结合，降低风险",
+      "割接窗口压缩，切换对业务透明"
+    ],
+    "metrics": [
+      "核心系统割接窗口 < 10 分钟",
+      "迁移成功率 100%，一致性验证 100%",
+      "执行期故障 0 起"
+    ]
+  },
+  {
+    "slug": "performance-cost-opt",
+    "title": "性能与成本优化：指标驱动",
+    "industry": "综合",
+    "stack": "慢 SQL 治理, 执行计划/索引, ProxySQL/PgBouncer, 资源分层",
+    "summary": "以指标为驱动的性能与成本优化，兼顾吞吐、时延与成本。",
+    "highlights": [
+      "Top SQL 治理与索引策略重构",
+      "连接池与读写分离组合，提升吞吐降低时延",
+      "冷热数据分层与实例规格精简"
+    ],
+    "metrics": [
+      "QPS 提升 20%+，P95 时延下降 30%+",
+      "存储成本下降 20%+",
+      "CPU 与 IO 利用率更均衡"
+    ]
+  }
+]
+

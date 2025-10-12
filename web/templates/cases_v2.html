@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+  <h2>应用案例库</h2>
+  <div class="cards">
+    {% for c in cases %}
+    <a class="card" href="/cases/{{ c.slug }}">
+      <h3>{{ c.title }}</h3>
+      <p>{{ c.industry }} · {{ c.stack }}</p>
+      <p>{{ c.summary }}</p>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+

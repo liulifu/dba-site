@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dba-site
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dba-site
+  template:
+    metadata:
+      labels:
+        app: dba-site
+    spec:
+      containers:
+        - name: dba-site
+          image: dba-site:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dba-site
+spec:
+  selector:
+    app: dba-site
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  type: ClusterIP
+

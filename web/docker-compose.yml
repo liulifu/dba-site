@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  dba-site:
+    build: .
+    image: dba-site:latest
+    container_name: dba-site
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+
