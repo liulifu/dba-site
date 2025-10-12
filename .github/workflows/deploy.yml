@@ -29,8 +29,10 @@ jobs:
 
       - name: Azure Login (Service Principal JSON)
         uses: azure/login@v2
+        env:
+          AZ_CREDS: ${{ secrets.AZURE_CREDENTIALS }}
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ env.AZ_CREDS }}
 
       - name: Show Azure CLI version
         run: az --version
