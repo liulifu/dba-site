@@ -18,14 +18,15 @@ import platform
 
 def create_cv_pdf():
     """生成刘力夫DBA简历PDF"""
-    
-    # 设置PDF输出路径
-    pdf_path = "刘力夫_DBA_简历_CN_v3.pdf"
-    
+
+    # 设置PDF输出路径（在当前脚本目录内）
+    ROOT = os.path.dirname(os.path.abspath(__file__))
+    pdf_path = os.path.join(ROOT, "刘力夫_DBA_简历_CN_v3.pdf")
+
     # 创建PDF文档
     doc = SimpleDocTemplate(
-        pdf_path, 
-        pagesize=A4, 
+        pdf_path,
+        pagesize=A4,
         rightMargin=2*cm, 
         leftMargin=2*cm, 
         topMargin=2*cm, 

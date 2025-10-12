@@ -9,10 +9,11 @@ import easyocr
 
 
 def main():
-    img_dir = os.path.join('screenshot')
+    ROOT = os.path.dirname(os.path.abspath(__file__))
+    img_dir = os.path.join(ROOT, 'screenshot')
     paths = sorted(glob(os.path.join(img_dir, '*.png')))
     if not paths:
-        print('No PNG files found in screenshot/.')
+        print('No PNG files found in resume/screenshot/.')
         return
 
     reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
@@ -30,10 +31,12 @@ def main():
         out_lines.append(combined)
         out_lines.append('')
 
-    with open('screenshots_ocr.txt', 'w', encoding='utf-8') as f:
+    out_txt = os.path.join(ROOT, 'screenshots_ocr.txt')
+    out_json = os.path.join(ROOT, 'screenshots_ocr.json')
+    with open(out_txt, 'w', encoding='utf-8') as f:
         f.write('\n'.join(out_lines))
 
-    with open('screenshots_ocr.json', 'w', encoding='utf-8') as f:
+    with open(out_json, 'w', encoding='utf-8') as f:
         json.dump(all_results, f, ensure_ascii=False, indent=2)
 
     print('OCR completed. Output: screenshots_ocr.txt and screenshots_ocr.json')

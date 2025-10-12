@@ -3,10 +3,11 @@ name: Build and Deploy to Azure Container Apps
 on:
   push:
     branches: [ "main" ]
-    paths: [ "web/**", ".github/workflows/deploy.yml" ]
-  push:
     tags:
       - "v*.*.*"
+    paths:
+      - "web/**"
+      - ".github/workflows/deploy.yml"
 
 env:
   IMAGE_NAME: dba-site
