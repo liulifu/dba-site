@@ -42,4 +42,6 @@ def healthz():
     return 'ok', 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    # Respect PORT/LISTEN_PORT for PaaS/local dev; container uses gunicorn in Dockerfile
+    port = int(os.environ.get('PORT') or os.environ.get('LISTEN_PORT') or 8080)
+    app.run(host='0.0.0.0', port=port, threaded=True)
