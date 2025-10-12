@@ -27,13 +27,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Azure Login (Service Principal)
+      - name: Azure Login (Service Principal JSON)
         uses: azure/login@v2
         with:
-          client-id: ${{ fromJSON(secrets.AZURE_CREDENTIALS).clientId }}
-          tenant-id: ${{ fromJSON(secrets.AZURE_CREDENTIALS).tenantId }}
-          subscription-id: ${{ fromJSON(secrets.AZURE_CREDENTIALS).subscriptionId }}
-          client-secret: ${{ fromJSON(secrets.AZURE_CREDENTIALS).clientSecret }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Show Azure CLI version
         run: az --version
