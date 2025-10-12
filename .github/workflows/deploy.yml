@@ -27,20 +27,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Extract SP fields
-        run: |
-          echo "AZ_CLIENT_ID=${{ fromJSON(secrets.AZURE_CREDENTIALS).clientId }}" >> $GITHUB_ENV
-          echo "AZ_TENANT_ID=${{ fromJSON(secrets.AZURE_CREDENTIALS).tenantId }}" >> $GITHUB_ENV
-          echo "AZ_SUBSCRIPTION_ID=${{ fromJSON(secrets.AZURE_CREDENTIALS).subscriptionId }}" >> $GITHUB_ENV
-          echo "AZ_CLIENT_SECRET=${{ fromJSON(secrets.AZURE_CREDENTIALS).clientSecret }}" >> $GITHUB_ENV
-
       - name: Azure Login (Service Principal)
         uses: azure/login@v2
         with:
-          client-id: ${{ env.AZ_CLIENT_ID }}
-          tenant-id: ${{ env.AZ_TENANT_ID }}
-          subscription-id: ${{ env.AZ_SUBSCRIPTION_ID }}
-          client-secret: ${{ env.AZ_CLIENT_SECRET }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
 
       - name: Show Azure CLI version
         run: az --version
