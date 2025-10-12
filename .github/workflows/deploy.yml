@@ -27,10 +27,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Prepare creds env
+        run: echo "AZ_CREDS=${{ secrets.AZURE_CREDENTIALS }}" >> $GITHUB_ENV
+
+      - name: Validate creds JSON
+        run: |
+          python - <<'PY'
+          import os, json
+          c = os.environ['AZ_CREDS']
+          json.loads(c)
+          print('creds JSON OK')
+          PY
+
       - name: Azure Login (Service Principal JSON)
         uses: azure/login@v2
-        env:
-          AZ_CREDS: ${{ secrets.AZURE_CREDENTIALS }}
         with:
           creds: ${{ env.AZ_CREDS }}
 
