@@ -1,70 +1,46 @@
-# DBA简历PDF生成器
+# DBA 网站与简历生成
 
-这个项目包含了将刘力夫DBA简历转换为标准PDF格式的工具。
+本仓库包含两部分：
+- `web/`：DBA 技术与案例网站（Flask，容器化，部署到 Azure Container Apps）
+- `resume/`：简历生成与 OCR 工具（ReportLab 生成 PDF，EasyOCR 从截图识别文本）
 
-## 文件说明
+## 目录结构
+- web/
+  - app.py, templates/, static/, cases.json, Dockerfile, docker-compose.yml
+- resume/
+  - generate_cv_pdf.py, ocr_extract.py, dba_cv.txt, screenshot/, screenshots_ocr.*
+- k8s/
+  - dba-site.yaml（可选：K8S 部署清单）
 
-- `dba_cv.txt` - 原始的Python脚本文件（已修改路径）
-- `generate_cv_pdf.py` - 改进的PDF生成脚本
-- `刘力夫_DBA_简历.pdf` - 生成的PDF简历文件
+## 开发与运行
 
-## 使用方法
+- 网站本地运行
+```bash
+cd web
+pip install -r requirements.txt
+python app.py
+# 浏览器访问 http://localhost:8080
+```
 
-### 1. 安装依赖
+- Docker 本地运行
+```bash
+cd web
+docker build -t dba-site:latest .
+docker run --rm -p 8080:8080 --name dba-site dba-site:latest
+```
 
+- 生成简历 PDF（输出在 resume/ 内）
 ```bash
 pip install reportlab
+python resume/generate_cv_pdf.py
 ```
 
-### 2. 生成PDF
+> 网站使用的 PDF 位于 `web/static/`，构建镜像前确保该目录存在目标 PDF（默认文件名：刘力夫_DBA_简历_CN_v3.pdf）。
 
-运行以下命令生成PDF简历：
+## 部署
+- CI/CD：.github/workflows/deploy.yml（Push 到 main 或打 tag 会触发）
+- 目标：Azure Container Apps（资源组：dba-site-rg，环境：dba-env，应用：dba-site）
 
-```bash
-python generate_cv_pdf.py
-```
-
-或者运行原始脚本：
-
-```bash
-python dba_cv.txt
-```
-
-## 功能特点
-
-- 使用ReportLab库生成专业的PDF格式
-- 支持中文内容显示
-- 标准A4页面格式
-- 清晰的章节结构和排版
-- 适合打印和电子分发
-
-## 简历内容概要
-
-刘力夫先生是一位拥有18年IT项目与运维经验的资深DBA，专注于：
-
-- **数据库技术**：Oracle、PostgreSQL、MySQL、SQL Server等
-- **性能优化**：SQL调优、索引策略、执行计划分析
-- **高可用架构**：主备切换、双活架构、异地容灾
-- **自动化运维**：Python/Shell脚本、监控告警
-- **平台化建设**：数据库中台、读写分离、CI/CD
-- **云服务**：阿里云、AWS、Azure数据库服务
-- **合规验证**：制药行业CSV验证、GxP/GMP体系
-
-## 工作经历亮点
-
-1. **百济神州生物药业** - ITBP数据库平台方向（2025.01至今）
-2. **苏州云数医药科技** - CSV验证工程师（2023.10-2024.12）
-3. **航天信息海外业务** - 实施运维经理（2018.10-2023.05）
-4. **卓望信息技术** - 高级IT经理（2014.05-2018.06）
-5. **普华讯光科技** - 项目经理/主管（2011.01-2014.05）
-
-## 教育背景
-
-- 吉林大学 - 硕士 软件工程 (2010-2013)
-- 东北农业大学 - 本科 食品科学与工程 (2003-2007)
-
-## 联系方式
-
-- 电话：15810517437
-- 邮箱：15810517437@139.com
-- 城市：北京
+更多细节参见：
+- CI_CD_GUIDE.md（流水线与命令指南）
+- AUDIT_LOG.md（完整审计日志）
