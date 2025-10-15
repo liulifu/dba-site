@@ -129,3 +129,20 @@
   - Set AZURE_LOCATION=eastasia：OK
   - Set ACR_LOGIN_SERVER=lifudbaacr.azurecr.io：OK
 - 说明：AZURE_CREDENTIALS 为服务主体 JSON（仅写入 GitHub Secrets，未提交到 Git）
+
+
+## 十二、项目结构整理
+- 新增目录 resume/ 并迁移简历相关脚本与资源：generate_cv_pdf.py、ocr_extract.py、dba_cv.txt、screenshot/、screenshots_ocr.*、根目录 PDF
+- 修改 resume/ 脚本文件路径逻辑：改为以脚本目录为 ROOT 进行读写，避免对仓库工作目录依赖
+- 保持网站代码在 web/ 下不变，网站依赖的 PDF 仍位于 web/static/
+- 修复 GitHub Actions push 触发配置：合并 branches + tags + paths 到同一 push 块
+
+## 十三、站点内容与架构方向调整（方案A）
+
+- 架构路线：确认采用方案A（FastAPI 统一 API 层，渐进式替换/增强 Flask）。
+- 站点入口：新增 “技术站入口” /portal，突出部署教学 /learn。
+- 内容调整：删除网站上的“方案/简历”公开页面（移除 /resume 导航与路由，并删除 web/static/…简历PDF）。
+- 后续计划：
+  1) 新增 services/api FastAPI 最小骨架（/healthz, /cases, /resume 元数据），先并行存在，不影响现网
+  2) 页面以 HTMX 从 API 拉取数据，逐步迁移模板渲染到 FastAPI/Starlette
+  3) CI/CD 与容器镜像升级为 uvicorn/gunicorn，多环境配置与可观测性接入
