@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(ROOT, 'cases.json')
-PDF_NAME = '刘力夫_DBA_简历_CN_v3.pdf'
 
 with open(DATA_PATH, 'r', encoding='utf-8') as f:
     CASES = json.load(f)
@@ -17,10 +16,11 @@ with open(DATA_PATH, 'r', encoding='utf-8') as f:
 def index():
     return render_template('index.html', cases=CASES[:6])
 
-@app.route('/resume')
-def resume():
-    pdf_exists = os.path.exists(os.path.join(ROOT, 'static', PDF_NAME))
-    return render_template('resume.html', pdf_exists=pdf_exists, pdf_name=PDF_NAME)
+@app.route('/portal')
+def portal():
+    return render_template('portal.html')
+
+
 
 @app.route('/cases')
 def cases():
