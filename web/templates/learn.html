@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block extra_head %}
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral' });</script>
+{% endblock %}
+{% block content %}
+<section>
+  <h2>从代码到 Azure 的容器化发布（交互式教学）</h2>
+  <p>本页以本项目为例，讲解如何将 Flask 网站以容器方式发布到 Azure Container Apps，并通过 GitHub Actions 持续部署。</p>
+
+  <details open>
+    <summary><strong>一、总体流程图（点击可收起）</strong></summary>
+    <div class="diagram">
+      <pre class="mermaid">
+      flowchart LR
+        A[本地代码提交 main] --> B[GitHub Actions 构建]
+        B --> C[Docker Build 镜像]
+        C --> D[推送到 ACR]
+        D --> E[更新 Azure Container Apps]
+        E --> F[外网入口 https://...azurecontainerapps.io]
+      </pre>
+    </div>
+  </details>
+
+  <details>
+    <summary><strong>二、环境准备</strong></summary>
+    <ol>
+      <li>Azure 资源：Resource Group、Container Apps Environment、Container App、Container Registry(ACR)</li>
+      <li>GitHub 仓库：Actions 工作流、Secrets（ACR 登录、资源组、环境、位置、应用名、Azure 凭据或 OIDC）</li>
+      <li>容器化：web/Dockerfile 定义构建方式（Gunicorn 运行）</li>
+    </ol>
+  </details>
+
+  <details>
+    <summary><strong>三、工作流关键步骤</strong></summary>
+    <ul>
+      <li>登录 Azure（建议 OIDC）；构建镜像并打 tag（latest + 版本/短 SHA）</li>
+      <li>az acr login，推送镜像到 lifudbaacr.azurecr.io/dba-site</li>
+      <li>az containerapp update 使用新镜像滚动发布</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary><strong>四、常见问题</strong>（点击展开排查建议）</summary>
+    <ul>
+      <li>Azure 登录失败：确保 AZURE_CREDENTIALS 为有效 JSON 或改用 OIDC</li>
+      <li>ACR 鉴权失败：检查 ACR 名称与权限（AcrPush/管理员启用）</li>
+      <li>镜像拉取慢/失败：同区域部署、重试策略、调整 SKU</li>
+    </ul>
+  </details>
+
+  <h3>动手实验（选择分支）</h3>
+  <div>
+    <label><input type="radio" name="auth" value="oidc" checked> 使用 OIDC（推荐）</label>
+    <label><input type="radio" name="auth" value="sp"> 使用 Service Principal JSON</label>
+  </div>
+  <div id="steps"></div>
+</section>
+<script src="/static/learn.js"></script>
+{% endblock %}
+

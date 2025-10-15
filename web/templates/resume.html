@@ -9,7 +9,21 @@
       <em>容器内未包含PDF文件。</em>
     {% endif %}
   </p>
-  <p>核心方向：MySQL / PostgreSQL / Oracle 生产级运维与架构，高可用与容灾、备份恢复、性能优化、迁移割接、监控与自动化、云RDS。</p>
+  {% if pdf_exists %}
+  <div style="border:1px solid #ddd;height:640px">
+    <iframe src="/static/{{ pdf_name }}" title="简历PDF" width="100%" height="100%"></iframe>
+  </div>
+  {% endif %}
+
+  <details open>
+    <summary><strong>核心能力</strong></summary>
+    <ul>
+      <li>数据库高可用与容灾（MySQL InnoDB Cluster / MGR、PostgreSQL Patroni、Oracle DG）</li>
+      <li>备份恢复策略与演练（企业 RPO/RTO 目标、全量+增量+归档）</li>
+      <li>性能优化与容量规划（慢 SQL、索引、统计信息、并发控制、热点分解）</li>
+      <li>自动化与平台化（监控、告警、补丁、灰度、审计）</li>
+    </ul>
+  </details>
 </section>
 {% endblock %}
 

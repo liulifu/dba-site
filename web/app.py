@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, send_from_directory, abort
+from flask import Flask, render_template, send_from_directory, abort, request
 import json
 import os
 
@@ -40,6 +40,10 @@ def static_files(filename):
 @app.route('/healthz')
 def healthz():
     return 'ok', 200
+
+@app.route('/learn')
+def learn():
+    return render_template('learn.html')
 
 if __name__ == '__main__':
     # CI trigger: no functional change
